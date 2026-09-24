@@ -1,12 +1,14 @@
 # LoomDesk
 
-A web product for a textile mill. Assign the day's beam and the looms light up. Behind the showpiece: work assignment, bills, and the khata.
+This repository is the public showpiece of a mill desk. Assign the day's beam and the looms light up.
 
 ## Open it
 
 [dhananisneh.github.io/loomdesk](https://dhananisneh.github.io/loomdesk/)
 
 Press **Assign the beam**. Press **Clear the floor** to put the looms dark again.
+
+![LoomDesk](preview.png)
 
 ## Author
 
