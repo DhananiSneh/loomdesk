@@ -3,81 +3,46 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LoomDesk — the mill, in light</title>
-  <meta name="description" content="LoomDesk is a web product for a textile mill: assign the day's work, collect bills, and keep the khata. This page is a public showpiece.">
+  <title>LoomDesk</title>
+  <meta name="description" content="A mill desk for the web. Assign beams to looms and keep a khata. Records stay in this browser.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <canvas id="warp" aria-hidden="true"></canvas>
   <header class="top">
-    <a class="mark" href="#mill">LoomDesk</a>
+    <a class="mark" href="./">LoomDesk</a>
+    <nav class="nav">
+      <button type="button" data-view="floor" class="is-on">Floor</button>
+      <button type="button" data-view="assign">Assign</button>
+      <button type="button" data-view="khata">Khata</button>
+    </nav>
     <a class="ghost" href="https://github.com/DhananiSneh/loomdesk">Source</a>
   </header>
-  <main id="mill">
-    <p class="eyebrow">Public showpiece</p>
-    <h1>The mill, pulled into light.</h1>
-    <p class="lede">Assign today's beam. The threads answer. This page is the public showpiece of a mill desk: work, bills, and the khata.</p>
-    <div class="actions">
-      <button type="button" id="assign">Assign the beam</button>
-      <button type="button" id="clear" class="quiet">Clear the floor</button>
-    </div>
-    <p class="status" id="status" role="status">The looms are dark. Give them a beam.</p>
-    <p class="by">A public showpiece by <a href="https://github.com/DhananiSneh">Sneh Dhanani</a>.</p>
+  <main>
+    <section id="floor" class="view">
+      <h1>The floor</h1>
+      <div id="floor-grid" class="grid"></div>
+    </section>
+    <section id="assign" class="view" hidden>
+      <h1>Assign a beam</h1>
+      <form id="assign-form">
+        <select id="loom" name="loom" aria-label="Loom"></select>
+        <input name="beam" required maxlength="80" placeholder="Beam" aria-label="Beam">
+        <input name="worker" maxlength="80" placeholder="Worker" aria-label="Worker">
+        <button type="submit">Light the loom</button>
+      </form>
+    </section>
+    <section id="khata" class="view" hidden>
+      <h1>Khata</h1>
+      <p class="total">Open balance <strong id="total">₹ 0</strong></p>
+      <form id="khata-form">
+        <input name="party" required maxlength="80" placeholder="Party" aria-label="Party">
+        <input name="amount" required type="number" step="1" placeholder="Amount" aria-label="Amount">
+        <input name="note" maxlength="120" placeholder="Note" aria-label="Note">
+        <button type="submit">Add line</button>
+      </form>
+      <ul id="khata-list"></ul>
+    </section>
   </main>
-  <script>
-    const canvas = document.getElementById("warp");
-    const ctx = canvas.getContext("2d");
-    const status = document.getElementById("status");
-    let width = 0;
-    let height = 0;
-    let lit = 0;
-    let pointer = 0.5;
-    const threads = 46;
-
-    function resize() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
-      canvas.style.width = width + "px";
-      canvas.style.height = height + "px";
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, width, height);
-      for (let i = 0; i < threads; i++) {
-        const x = (width * 0.42) + ((i - threads / 2) * (width * 0.012));
-        const on = i < lit;
-        const sway = Math.sin(i * 0.7 + pointer * 4) * 10;
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.bezierCurveTo(x + sway, height * 0.35, x - sway, height * 0.65, x + sway * 0.3, height);
-        ctx.strokeStyle = on ? "rgba(232, 196, 122, 0.85)" : "rgba(255,255,255,0.08)";
-        ctx.lineWidth = on ? 1.6 : 1;
-        ctx.stroke();
-      }
-      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        requestAnimationFrame(draw);
-      }
-    }
-
-    window.addEventListener("pointermove", (event) => {
-      pointer = event.clientX / Math.max(width, 1);
-    });
-    document.getElementById("assign").addEventListener("click", () => {
-      lit = Math.min(threads, lit + 8);
-      const beams = Math.ceil(lit / 8);
-      status.textContent = beams + (beams === 1 ? " beam is on the floor." : " beams are on the floor.");
-    });
-    document.getElementById("clear").addEventListener("click", () => {
-      lit = 0;
-      status.textContent = "The looms are dark. Give them a beam.";
-    });
-    window.addEventListener("resize", resize);
-    resize();
-    draw();
-  </script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

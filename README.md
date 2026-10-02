@@ -1,14 +1,16 @@
 # LoomDesk
 
-This repository is the public showpiece of a mill desk. Assign the day's beam and the looms light up.
+A mill desk for the web. The floor shows each loom, Assign lights a beam, and Khata keeps the open balance. Records stay in this browser after a refresh.
 
-## Open it
+![Four looms on the floor](images/preview.png)
 
-[dhananisneh.github.io/loomdesk](https://dhananisneh.github.io/loomdesk/)
+## Run it
 
-Press **Assign the beam**. Press **Clear the floor** to put the looms dark again.
+Open [dhananisneh.github.io/loomdesk](https://dhananisneh.github.io/loomdesk/) or serve this folder.
 
-![LoomDesk](preview.png)
+```bash
+npm test
+```
 
 ## Author
 
